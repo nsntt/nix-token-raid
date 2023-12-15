@@ -2,6 +2,7 @@ import requests
 from time import sleep, strftime
 from colorama import init, Fore
 import concurrent.futures
+from getpass import getpass
 
 import discord
 
@@ -192,7 +193,6 @@ def get_server_info(token: str, guild_id: int) -> dict:
 
 def init_panel() -> None:
     global hour
-    from getpass import getpass
     token = getpass(f'{Fore.BLACK}[{Fore.RED}{hour}{Fore.BLACK}] {Fore.GREEN}enter the [user/bot] token: ')
     is_valid_token = check_token(token)
     if bool(is_valid_token) is not False:
