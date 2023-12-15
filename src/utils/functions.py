@@ -193,7 +193,7 @@ def get_server_info(token: str, guild_id: int) -> dict:
 
 def init_panel() -> None:
     global hour
-    token = getpass(f'{Fore.BLACK}[{Fore.RED}{hour}{Fore.BLACK}] {Fore.GREEN}enter the [user/bot] token: ')
+    token = input(f'{Fore.BLACK}[{Fore.RED}{hour}{Fore.BLACK}] {Fore.GREEN}enter the [user/bot] token: ')
     is_valid_token = check_token(token)
     if bool(is_valid_token) is not False:
         global token_input
