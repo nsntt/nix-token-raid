@@ -22,9 +22,10 @@ def take_action_menu() -> None:
         print(f'{Fore.GREEN}⩥-----------------------------------------------------------------⩤{Fore.RESET}')
         print(f'''
                     O P T I O N S:
-                    {Fore.RED}1. view guilds info.
-                    {Fore.RED}2. raid with  token.
-                    {Fore.RED}0. exit     program.
+                    {Fore.RED}1. view    guilds     info.
+                    {Fore.RED}2. raid    with      token.
+                    {Fore.RED}3. reset token information.
+                    {Fore.RED}0. exit            program.
         ''')
         print(f'{Fore.GREEN}⩥-----------------------------------------------------------------⩤{Fore.RESET}\n')
         action = input(f'{Fore.BLACK}[{Fore.RED}{hour}{Fore.BLACK}] {Fore.GREEN}select option: ')
@@ -40,6 +41,10 @@ def take_action_menu() -> None:
         if action == "2":
             server_id = input(f'{Fore.BLACK}[{Fore.RED}{hour}{Fore.BLACK}] {Fore.GREEN}set server id: ')
             raid_server_action(server_id)
+
+        if action == "3":
+            print(f'{Fore.GREEN}⩥-----------------------------------------------------------------⩤{Fore.RESET}')
+            init_panel()
 
 def raid_server_action(server_id: str) -> None:
     guild = get_server_info(token_input, server_id)
@@ -61,6 +66,7 @@ def raid_server_action(server_id: str) -> None:
                     {Fore.RED}4. change server    appearance.
                     {Fore.RED}5. make       new     channels.
                     {Fore.RED}6. spam channels with bot-user.
+                    {Fore.RED}7. reset     token information.
                     {Fore.RED}0. exit     the        program.
     ''')
     action = input(f'{Fore.BLACK}[{Fore.RED}{hour}{Fore.BLACK}] {Fore.GREEN}select option: ')
@@ -188,6 +194,10 @@ def raid_server_action(server_id: str) -> None:
                 executor.map(lambda channel: send_message(channel, headers), channels_list)
 
         raid_server_action(server_id)
+
+    if action == "7":
+        print(f'{Fore.GREEN}⩥-----------------------------------------------------------------⩤{Fore.RESET}')
+        init_panel()
 
 def send_message(channel_id, headers):
     try:
